@@ -1,0 +1,36 @@
+diff -uNr apache-couchdb-1.2.0.orig/src/couchdb/couch_api_wrap_httpc.erl apache-couchdb-1.2.0/src/couchdb/couch_api_wrap_httpc.erl
+--- apache-couchdb-1.2.0.orig/src/couchdb/couch_api_wrap_httpc.erl	2012-03-07 09:25:48.397455602 -0800
++++ apache-couchdb-1.2.0/src/couchdb/couch_api_wrap_httpc.erl	2012-03-07 09:14:02.337010584 -0800
+@@ -14,7 +14,7 @@
+ 
+ -include("couch_db.hrl").
+ -include("couch_api_wrap.hrl").
+--include("../ibrowse/ibrowse.hrl").
++-include("/usr/lib/erlang/lib/ibrowse-2.2.0/include/ibrowse.hrl").
+ 
+ -export([setup/1]).
+ -export([send_req/3]).
+diff -uNr apache-couchdb-1.2.0.orig/src/couchdb/couch_httpd_proxy.erl apache-couchdb-1.2.0/src/couchdb/couch_httpd_proxy.erl
+--- apache-couchdb-1.2.0.orig/src/couchdb/couch_httpd_proxy.erl	2012-03-07 09:22:52.490706415 -0800
++++ apache-couchdb-1.2.0/src/couchdb/couch_httpd_proxy.erl	2012-03-07 09:25:10.940509013 -0800
+@@ -14,7 +14,7 @@
+ -export([handle_proxy_req/2]).
+ 
+ -include("couch_db.hrl").
+--include("../ibrowse/ibrowse.hrl").
++-include("/usr/lib/erlang/lib/ibrowse-2.2.0/include/ibrowse.hrl").
+ 
+ -define(TIMEOUT, infinity).
+ -define(PKT_SIZE, 4096).
+diff -uNr apache-couchdb-1.2.0.orig/src/couchdb/couch_replicator_utils.erl apache-couchdb-1.2.0/src/couchdb/couch_replicator_utils.erl
+--- apache-couchdb-1.2.0.orig/src/couchdb/couch_replicator_utils.erl	2012-03-07 09:22:52.488706419 -0800
++++ apache-couchdb-1.2.0/src/couchdb/couch_replicator_utils.erl	2012-03-07 09:25:01.552522395 -0800
+@@ -21,7 +21,7 @@
+ -include("couch_db.hrl").
+ -include("couch_api_wrap.hrl").
+ -include("couch_replicator.hrl").
+--include("../ibrowse/ibrowse.hrl").
++-include("/usr/lib/erlang/lib/ibrowse-2.2.0/include/ibrowse.hrl").
+ 
+ -import(couch_util, [
+     get_value/2,

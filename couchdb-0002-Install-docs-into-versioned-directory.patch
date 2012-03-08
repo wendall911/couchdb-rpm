@@ -1,0 +1,26 @@
+From 71ba13a7fb4a06571152da599dae9fe7bcb18807 Mon Sep 17 00:00:00 2001
+From: Peter Lemenkov <lemenkov@gmail.com>
+Date: Sun, 13 Feb 2011 14:06:12 +0300
+Subject: [PATCH 02/13] Install docs into versioned directory
+
+Signed-off-by: Peter Lemenkov <lemenkov@gmail.com>
+---
+ configure.ac |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index c609a08..999f890 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -356,7 +356,7 @@ AC_SUBST([bug_uri], ["LOCAL_BUG_URI"])
+ 
+ AC_SUBST([localconfdir], [${sysconfdir}/${package_identifier}])
+ AC_SUBST([localdatadir], [${datadir}/${package_identifier}])
+-AC_SUBST([localdocdir], [${datadir}/doc/${package_identifier}])
++AC_SUBST([localdocdir], [${datadir}/doc/${package_identifier}-${version}])
+ AC_SUBST([locallibdir], [${libdir}/${package_identifier}])
+ AC_SUBST([localstatelibdir], [${localstatedir}/lib/${package_identifier}])
+ AC_SUBST([localstatelogdir], [${localstatedir}/log/${package_identifier}])
+-- 
+1.7.5.1
+

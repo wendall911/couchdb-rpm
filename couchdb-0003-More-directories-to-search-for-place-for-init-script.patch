@@ -1,0 +1,46 @@
+From 80fea41e3912f06e76e487531533e6b77e25ad93 Mon Sep 17 00:00:00 2001
+From: Peter Lemenkov <lemenkov@gmail.com>
+Date: Sun, 13 Feb 2011 14:21:20 +0300
+Subject: [PATCH 03/13] More directories to search for place for init-script
+
+Signed-off-by: Peter Lemenkov <lemenkov@gmail.com>
+---
+ configure.ac |   16 +++++++++++-----
+ 1 files changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 999f890..4ac64f9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -294,17 +294,23 @@ launchd_enabled=false
+ 
+ if test "$use_init" = "yes"; then
+    AC_MSG_CHECKING(location of init directory)
+-   if test -d /etc/rc.d; then
++   if test -d /etc/rc.d/init.d; then
+        init_enabled=true
+-       AC_SUBST([initdir], ['${sysconfdir}/rc.d'])
++       AC_SUBST([initdir], ['${sysconfdir}/rc.d/init.d'])
+        AC_MSG_RESULT(${initdir})
+    else
+-       if test -d /etc/init.d; then
++       if test -d /etc/rc.d; then
+            init_enabled=true
+-           AC_SUBST([initdir], ['${sysconfdir}/init.d'])
++           AC_SUBST([initdir], ['${sysconfdir}/rc.d'])
+            AC_MSG_RESULT(${initdir})
+        else
+-           AC_MSG_RESULT(not found)
++           if test -d /etc/init.d; then
++              init_enabled=true
++              AC_SUBST([initdir], ['${sysconfdir}/init.d'])
++              AC_MSG_RESULT(${initdir})
++           else
++              AC_MSG_RESULT(not found)
++           fi
+        fi
+     fi
+ fi
+-- 
+1.7.5.1
+

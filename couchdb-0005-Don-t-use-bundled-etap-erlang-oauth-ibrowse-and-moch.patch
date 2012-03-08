@@ -1,0 +1,40 @@
+diff -uNr apache-couchdb-1.2.0.orig/configure.ac apache-couchdb-1.2.0/configure.ac
+--- apache-couchdb-1.2.0.orig/configure.ac	2012-03-07 09:18:30.439562845 -0800
++++ apache-couchdb-1.2.0/configure.ac	2012-03-07 09:14:02.334010588 -0800
+@@ -559,10 +559,10 @@
+ AC_CONFIG_FILES([src/couchdb/couch.app.tpl])
+ AC_CONFIG_FILES([src/couchdb/Makefile])
+ AC_CONFIG_FILES([src/couchdb/priv/Makefile])
+-AC_CONFIG_FILES([src/erlang-oauth/Makefile])
+-AC_CONFIG_FILES([src/etap/Makefile])
+-AC_CONFIG_FILES([src/ibrowse/Makefile])
+-AC_CONFIG_FILES([src/mochiweb/Makefile])
++#AC_CONFIG_FILES([src/erlang-oauth/Makefile])
++#AC_CONFIG_FILES([src/etap/Makefile])
++#AC_CONFIG_FILES([src/ibrowse/Makefile])
++#AC_CONFIG_FILES([src/mochiweb/Makefile])
+ AC_CONFIG_FILES([src/snappy/Makefile])
+ AC_CONFIG_FILES([src/snappy/google-snappy/snappy-stubs-public.h])
+ AC_CONFIG_FILES([src/ejson/Makefile])
+diff -uNr apache-couchdb-1.2.0.orig/src/Makefile.am apache-couchdb-1.2.0/src/Makefile.am
+--- apache-couchdb-1.2.0.orig/src/Makefile.am	2012-03-07 09:19:05.688503979 -0800
++++ apache-couchdb-1.2.0/src/Makefile.am	2012-03-07 09:14:02.334010588 -0800
+@@ -10,4 +10,4 @@
+ ## License for the specific language governing permissions and limitations under
+ ## the License.
+ 
+-SUBDIRS = couchdb ejson erlang-oauth etap ibrowse mochiweb snappy
++SUBDIRS = couchdb ejson snappy
+diff -uNr apache-couchdb-1.2.0.orig/test/etap/test_util.erl.in apache-couchdb-1.2.0/test/etap/test_util.erl.in
+--- apache-couchdb-1.2.0.orig/test/etap/test_util.erl.in	2012-03-07 09:21:01.322310867 -0800
++++ apache-couchdb-1.2.0/test/etap/test_util.erl.in	2012-03-07 09:14:02.335010586 -0800
+@@ -23,8 +23,7 @@
+     "@abs_top_builddir@".
+ 
+ init_code_path() ->
+-    Paths = ["etap", "couchdb", "ejson", "erlang-oauth", "ibrowse", "mochiweb",
+-             "snappy"],
++    Paths = ["couchdb", "ejson", "snappy"],
+     lists:foreach(fun(Name) ->
+         code:add_patha(filename:join([builddir(), "src", Name]))
+     end, Paths).
