@@ -11,7 +11,7 @@ These are written and tested against couchdb-1.2.0
 
 ###Centos:
 * [Instructions](http://wiki.centos.org/HowTos/SetupRpmBuildEnvironment) for setting up rpmbuild on Centos NOTE: Do not install redhat-rpm-config
-* Build and install working js-devel-1.8.5 (See README_JS_DEVEL.md)
+* Build and install working js-devel-1.8.5 (See [README_JS_DEVEL.md](https://github.com/wendall911/couchdb-rpm/blob/master/README_JS_DEVEL.md))
 * sudo yum install autoconf automake libtool curl-devel erlang-erts erlang-etap erlang-ibrowse erlang-mochiweb erlang-oauth erlang-os_mon help2man libicu-devel perl-Test-Harness erlang-crypto erlang-erts erlang-inets erlang-kernel erlang-sasl erlang-stdlib erlang-tools
 
 ## Build RPM (Fedora and Centos)
