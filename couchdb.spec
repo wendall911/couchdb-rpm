@@ -89,7 +89,8 @@ rm -rf src/mochiweb
 ./bootstrap
 
 %configure \
-    --with-erlang=/usr/lib/erlang/usr/include/ \
+    --with-erlang=%{_libdir}/erlang/usr/include/ \
+    --libdir=%{_libdir} \
 
 make %{?_smp_mflags}
 
@@ -107,7 +108,7 @@ mv $RPM_BUILD_ROOT%{_sysconfdir}/{default,sysconfig}
 # create /etc/tmpfiles.d entry
 %if 0%{?fc15}%{?fc16}
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d
-echo "d /var/run/couchdb 0755 %{couchdb_user} root" > $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d/%{name}.conf
+
 %endif
 
 
