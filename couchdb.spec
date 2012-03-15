@@ -4,7 +4,7 @@
 
 Name:           couchdb
 Version:        1.2.0
-Release:        8%{?dist}
+Release:        2%{?dist}
 Summary:        A document database server, accessible via a RESTful JSON API
 
 Group:          Applications/Databases
@@ -19,8 +19,6 @@ Patch4:		couchdb-0004-Install-into-erllibdir-by-default.patch
 Patch5:		couchdb-0005-Don-t-use-bundled-etap-erlang-oauth-ibrowse-and-moch.patch
 Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
 Patch7:		couchdb-0007-Remove-pid-file-after-stop.patch
-Patch8:     couchdb-0008-Fix-very-slow-test-test-etap-220-compaction-daemon.t.patch
-Patch9:     couchdb-0009-Ensure-use-of-specified-spidermonkey.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -78,8 +76,6 @@ JavaScript acting as the default view definition language.
 %patch5 -p1 -b .remove_bundled_libs
 %patch6 -p1 -b .workaround_for_system_wide_ibrowse
 %patch7 -p1 -b .remove_pid_file
-%patch8 -p1 -b .fix_slow_test
-%patch9 -p1 -b .spidermonkey
 
 # Remove bundled libraries
 rm -rf src/erlang-oauth
@@ -93,8 +89,6 @@ rm -rf src/mochiweb
 %configure \
     --with-erlang=%{_libdir}/erlang/usr/include/ \
     --libdir=%{_libdir} \
-    --with-js-lib=%{_libdir} \
-    --with-js-include=%{_libdir}/js/include/ \
 
 make %{?_smp_mflags}
 
@@ -169,6 +163,11 @@ fi
 
 
 %changelog
+* Wed Mar 15 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-2 
+- Removed spidermonkey configuration patch (Fixed)
+- Removed etap patch (Fixed)
+- Removed spidermonkey configuration flags not required with new configure
+
 * Wed Mar 7 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-1
 - Removed support for EL-5/Centos-5 This will not happen without serious work, as-in not worth my time and effort.
 - Removed ibrowse patch
