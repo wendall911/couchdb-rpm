@@ -4,7 +4,7 @@
 
 Name:           couchdb
 Version:        1.2.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A document database server, accessible via a RESTful JSON API
 
 Group:          Applications/Databases
@@ -163,6 +163,9 @@ fi
 
 
 %changelog
+* Wed Mar 21 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-3 
+- New version based on cd238b42d13
+
 * Wed Mar 15 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-2 
 - Removed spidermonkey configuration patch (Fixed)
 - Removed etap patch (Fixed)
