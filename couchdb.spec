@@ -4,7 +4,7 @@
 
 Name:           couchdb
 Version:        1.2.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A document database server, accessible via a RESTful JSON API
 
 Group:          Applications/Databases
@@ -97,16 +97,20 @@ make %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-# Install our custom couchdb initscript
+%if 0%{?fc17}%{?fc18}
+install -D -m 755 %{SOURCE2} $RPM_BUILD_ROOT%{_unitdir}/%{name}.service
+rm -rf $RPM_BUILD_ROOT/%{_sysconfdir}/rc.d/
+%else
 install -D -m 755 %{SOURCE1} $RPM_BUILD_ROOT%{_initrddir}/%{name}
+%endif
 
 # Use /etc/sysconfig instead of /etc/default
 mv $RPM_BUILD_ROOT%{_sysconfdir}/{default,sysconfig}
 
 # create /etc/tmpfiles.d entry
-%if 0%{?fc15}%{?fc16}
+%if 0%{?fc15}%{?fc16}%{?fc17}%{?fc18}
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d
-
+echo "d /var/run/couchdb 0755 %{couchdb_user} root" > $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d/%{name}.conf
 %endif
 
 
@@ -127,14 +131,52 @@ exit 0
 
 
 %post
+%if 0%{?fc17}%{?fc18}
+if [ $1 -eq 1 ] ; then 
+    # Initial installation 
+    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
+fi
+%else
 /sbin/chkconfig --add couchdb
+%endif
 
 
 %preun
+%if 0%{?fc17}%{?fc18}
+if [ $1 -eq 0 ] ; then
+    # Package removal, not upgrade
+    /bin/systemctl --no-reload disable couchdb.service > /dev/null 2>&1 || :
+    /bin/systemctl stop couchdb.service > /dev/null 2>&1 || :
+fi
+%else
 if [ $1 = 0 ] ; then
     /sbin/service couchdb stop >/dev/null 2>&1
     /sbin/chkconfig --del couchdb
 fi
+%endif
+
+
+%postun
+%if 0%{?fc17}%{?fc18}
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+if [ $1 -ge 1 ] ; then
+    # Package upgrade, not uninstall
+    /bin/systemctl try-restart couchdb.service >/dev/null 2>&1 || :
+fi
+%endif
+
+
+%if 0%{?fc17}%{?fc18}
+%triggerun -- couchdb < 1.0.3-5
+# Save the current service runlevel info
+# User must manually run systemd-sysv-convert --apply httpd
+# to migrate them to systemd targets
+/usr/bin/systemd-sysv-convert --save couchdb >/dev/null 2>&1 ||:
+
+# Run these because the SysV package being removed won't do them
+/sbin/chkconfig --del couchdb >/dev/null 2>&1 || :
+/bin/systemctl try-restart couchdb.service >/dev/null 2>&1 || :
+%endif
 
 
 %files
@@ -147,7 +189,14 @@ fi
 %config(noreplace) %attr(0644, %{couchdb_user}, root) %{_sysconfdir}/%{name}/local.ini
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%if 0%{?fc15}%{?fc16}%{?fc17}%{?fc18}
+%{_sysconfdir}/tmpfiles.d/%{name}.conf
+%endif
+%if 0%{?fc17}%{?fc18}
+%{_unitdir}/%{name}.service
+%else
 %{_initrddir}/%{name}
+%endif
 %{_bindir}/%{name}
 %{_bindir}/couchjs
 %{_bindir}/couch-config
@@ -163,6 +212,11 @@ fi
 
 
 %changelog
+* Sat Mar 24 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-4
+- Added support for fc17/18
+- Added run dir to tmpfiles.d for fc15+ so run dir persists between reboots.
+- Update for 1.2.0 release, third round based on 654768
+
 * Wed Mar 21 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-3 
 - New version based on cd238b42d13
 
