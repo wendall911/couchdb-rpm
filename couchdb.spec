@@ -4,7 +4,7 @@
 
 Name:           couchdb
 Version:        1.2.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A document database server, accessible via a RESTful JSON API
 
 Group:          Applications/Databases
@@ -18,7 +18,7 @@ Patch3:		couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
 Patch4:		couchdb-0004-Install-into-erllibdir-by-default.patch
 Patch5:		couchdb-0005-Don-t-use-bundled-etap-erlang-oauth-ibrowse-and-moch.patch
 Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
-Patch7:		couchdb-0007-Remove-pid-file-after-stop.patch
+Patch7:		couchdb-0007-wait-for-couch-stop.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -212,6 +212,10 @@ fi
 
 
 %changelog
+* Tue Mar 27 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-5
+- Removed patch that forces removal of PID file.
+- Added patch to wait until couchdb actually exits before returning success.
+
 * Sat Mar 24 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-4
 - Added support for fc17/18
 - Added run dir to tmpfiles.d for fc15+ so run dir persists between reboots.

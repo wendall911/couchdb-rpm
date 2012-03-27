@@ -1,0 +1,13 @@
+diff -up a/bin/couchdb.tpl.in b/bin/couchdb.tpl.in
+--- a/bin/couchdb.tpl.in	2012-03-27 11:13:38.580959231 -0700
++++ b/bin/couchdb.tpl.in	2012-03-27 11:14:33.414997788 -0700
+@@ -273,6 +273,9 @@ stop_couchdb () {
+         fi
+         if kill -0 $PID 2> /dev/null; then
+             if kill -1 $PID 2> /dev/null; then
++                while [ -d "/proc/$PID" -a -f $PID_FILE ]; do
++                    sleep 1
++                done
+                 if test "$1" = "false"; then
+                     echo "Apache CouchDB has been shutdown."
+                 else
