@@ -4,7 +4,7 @@
 
 Name:           couchdb
 Version:        1.2.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A document database server, accessible via a RESTful JSON API
 
 Group:          Applications/Databases
@@ -84,7 +84,9 @@ rm -rf src/ibrowse
 rm -rf src/mochiweb
 
 %build
-./bootstrap
+#./bootstrap
+autoreconf -ivf
+
 
 %configure \
     --with-erlang=%{_libdir}/erlang/usr/include/ \
@@ -212,6 +214,9 @@ fi
 
 
 %changelog
+* Mon Apr 2 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-6
+- Updated for release artifact e736fa9e314034e2603ac5861692ddeab92f1dad
+
 * Tue Mar 27 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-5
 - Removed patch that forces removal of PID file.
 - Added patch to wait until couchdb actually exits before returning success.

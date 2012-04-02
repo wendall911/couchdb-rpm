@@ -22,7 +22,9 @@ These are written and tested against couchdb-1.2.0
 Or:
 
 * Checkout couchdb from https://git-wip-us.apache.org/repos/asf/couchdb.git
-* Alternatively, create an archive from a release tag or repo revision: git archive --format=tar --prefix=apache-couchdb-1.2.0/ fb72251bc | gzip >apache-couchdb-1.2.0.tar.gz
+* Create an archive from a release tag or repo revision: git archive --format=tar --prefix=apache-couchdb-1.2.0/ fb72251bc | gzip >apache-couchdb-1.2.0.tar.gz
+* Comment out "autoreconf -ivf" and uncomment './bootstrap' as configure doesn't exist in git repo and needs bootstrapped
+
 
 Then:
 
