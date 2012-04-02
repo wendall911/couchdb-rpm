@@ -4,7 +4,7 @@
 
 Name:           couchdb
 Version:        1.2.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A document database server, accessible via a RESTful JSON API
 
 Group:          Applications/Databases
@@ -49,6 +49,7 @@ Requires:	erlang-oauth
 Requires:	erlang-sasl
 Requires:	erlang-stdlib
 Requires:	erlang-tools
+Requires:   erlang-os_mon
 
 #Initscripts
 Requires(post): chkconfig
@@ -214,6 +215,10 @@ fi
 
 
 %changelog
+* Mon Apr 2 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-7
+- Added erlang-os_mon as a dependency
+- Added timeout to wait for stop patch.
+
 * Mon Apr 2 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-6
 - Updated for release artifact e736fa9e314034e2603ac5861692ddeab92f1dad
 
