@@ -2,16 +2,18 @@
 %define couchdb_group couchdb
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
-Name:           couchdb
-Version:        1.2.0
-Release:        7%{?dist}
-Summary:        A document database server, accessible via a RESTful JSON API
+Name:       couchdb
+Version:    1.2.0
+Release:    8%{?dist}
+Summary:    A document database server, accessible via a RESTful JSON API
 
-Group:          Applications/Databases
-License:        ASL 2.0
-URL:            http://couchdb.apache.org/
-Source0:        http://www.apache.org/dist/%{name}/%{version}/apache-%{name}-%{version}.tar.gz
-Source1:        %{name}.init
+Group:      Applications/Databases
+License:    ASL 2.0
+URL:        http://couchdb.apache.org/
+Source0:    http://www.apache.org/dist/%{name}/%{version}/apache-%{name}-%{version}.tar.gz
+Source1:    %{name}.init
+Source2:    %{name}.service
+Source3:	%{name}.tmpfiles.conf
 Patch1:		couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.patch
 Patch2:		couchdb-0002-Install-docs-into-versioned-directory.patch
 Patch3:		couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
@@ -20,7 +22,7 @@ Patch5:		couchdb-0005-Don-t-use-bundled-etap-erlang-oauth-ibrowse-and-moch.patch
 Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
 Patch7:		couchdb-0007-wait-for-couch-stop.patch
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 
 BuildRequires:  autoconf
@@ -52,8 +54,14 @@ Requires:	erlang-tools
 Requires:   erlang-os_mon
 
 #Initscripts
+%if 0%{?fc17}%{?fc18}
+Requires(post): systemd-units
+Requires(preun): systemd-units
+Requires(postun): systemd-units
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig initscripts
+%endif
 
 # Users and groups
 Requires(pre): shadow-utils
@@ -100,20 +108,20 @@ make %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-%if 0%{?fc17}%{?fc18}
+# Install our custom couchdb initscript
+%if 0%{?fedora} > 16
 install -D -m 755 %{SOURCE2} $RPM_BUILD_ROOT%{_unitdir}/%{name}.service
 rm -rf $RPM_BUILD_ROOT/%{_sysconfdir}/rc.d/
+rm -rf $RPM_BUILD_ROOT%{_sysconfdir}/default/
 %else
+# Use /etc/sysconfig instead of /etc/default
+mv $RPM_BUILD_ROOT%{_sysconfdir}/{default,sysconfig}
 install -D -m 755 %{SOURCE1} $RPM_BUILD_ROOT%{_initrddir}/%{name}
 %endif
 
-# Use /etc/sysconfig instead of /etc/default
-mv $RPM_BUILD_ROOT%{_sysconfdir}/{default,sysconfig}
-
-# create /etc/tmpfiles.d entry
-%if 0%{?fc15}%{?fc16}%{?fc17}%{?fc18}
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d
-echo "d /var/run/couchdb 0755 %{couchdb_user} root" > $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d/%{name}.conf
+# Install /etc/tmpfiles.d entry
+%if 0%{?fedora} > 14
+install -D -m 644 %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d/%{name}.conf
 %endif
 
 
@@ -134,9 +142,9 @@ exit 0
 
 
 %post
-%if 0%{?fc17}%{?fc18}
-if [ $1 -eq 1 ] ; then 
-    # Initial installation 
+%if 0%{?fedora} > 16
+if [ $1 -eq 1 ] ; then
+    # Initial installation
     /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 %else
@@ -145,7 +153,7 @@ fi
 
 
 %preun
-%if 0%{?fc17}%{?fc18}
+%if 0%{?fedora} > 16
 if [ $1 -eq 0 ] ; then
     # Package removal, not upgrade
     /bin/systemctl --no-reload disable couchdb.service > /dev/null 2>&1 || :
@@ -160,7 +168,7 @@ fi
 
 
 %postun
-%if 0%{?fc17}%{?fc18}
+%if 0%{?fedora} > 16
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 if [ $1 -ge 1 ] ; then
     # Package upgrade, not uninstall
@@ -169,7 +177,7 @@ fi
 %endif
 
 
-%if 0%{?fc17}%{?fc18}
+%if 0%{?fedora} > 16
 %triggerun -- couchdb < 1.0.3-5
 # Save the current service runlevel info
 # User must manually run systemd-sysv-convert --apply httpd
@@ -190,14 +198,14 @@ fi
 %dir %{_sysconfdir}/%{name}/default.d
 %config(noreplace) %attr(0644, %{couchdb_user}, root) %{_sysconfdir}/%{name}/default.ini
 %config(noreplace) %attr(0644, %{couchdb_user}, root) %{_sysconfdir}/%{name}/local.ini
-%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%if 0%{?fc15}%{?fc16}%{?fc17}%{?fc18}
+%if 0%{?fedora} > 14
 %{_sysconfdir}/tmpfiles.d/%{name}.conf
 %endif
-%if 0%{?fc17}%{?fc18}
+%if 0%{?fedora} > 16
 %{_unitdir}/%{name}.service
 %else
+%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %{_initrddir}/%{name}
 %endif
 %{_bindir}/%{name}
@@ -215,6 +223,9 @@ fi
 
 
 %changelog
+* Tue Aug 28 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-8
+- Merged Peter Lemenkov's systemd support.
+
 * Mon Apr 2 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-7
 - Added erlang-os_mon as a dependency
 - Added timeout to wait for stop patch.
