@@ -3,8 +3,8 @@
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
 Name:       couchdb
-Version:    1.2.0
-Release:    8%{?dist}
+Version:    1.2.1
+Release:    1%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -223,6 +223,9 @@ fi
 
 
 %changelog
+* Wed Jan 2 2013 Wendall Cada <wendallc@83864.com> - 1.2.1-1
+- Updated version to 1.2.1
+
 * Tue Aug 28 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-8
 - Merged Peter Lemenkov's systemd support.
 
