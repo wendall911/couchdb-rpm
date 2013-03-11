@@ -1,0 +1,80 @@
+diff -up apache-couchdb-1.3.0.orig/configure.ac apache-couchdb-1.3.0/configure.ac
+--- apache-couchdb-1.3.0.orig/configure.ac	2013-03-11 10:26:01.394927725 -0700
++++ apache-couchdb-1.3.0/configure.ac	2013-03-11 12:18:56.595870867 -0700
+@@ -23,7 +23,6 @@ AC_CONFIG_AUX_DIR([build-aux])
+ AC_CONFIG_MACRO_DIR([m4])
+ 
+ AC_CONFIG_HEADERS([config.h])
+-AC_CONFIG_HEADERS([src/snappy/google-snappy/config.h])
+ 
+ AM_INIT_AUTOMAKE([1.6.3 foreign])
+ 
+@@ -726,12 +725,6 @@ AC_CONFIG_FILES([src/couch_replicator/Ma
+ AC_CONFIG_FILES([src/couchdb/couch.app.tpl])
+ AC_CONFIG_FILES([src/couchdb/Makefile])
+ AC_CONFIG_FILES([src/couchdb/priv/Makefile])
+-AC_CONFIG_FILES([src/erlang-oauth/Makefile])
+-AC_CONFIG_FILES([src/etap/Makefile])
+-AC_CONFIG_FILES([src/ibrowse/Makefile])
+-AC_CONFIG_FILES([src/mochiweb/Makefile])
+-AC_CONFIG_FILES([src/snappy/Makefile])
+-AC_CONFIG_FILES([src/snappy/google-snappy/snappy-stubs-public.h])
+ AC_CONFIG_FILES([src/ejson/Makefile])
+ AC_CONFIG_FILES([test/Makefile])
+ AC_CONFIG_FILES([test/bench/Makefile])
+
+diff -up apache-couchdb-1.3.0.orig/src/Makefile.am apache-couchdb-1.3.0/src/Makefile.am
+--- apache-couchdb-1.3.0.orig/src/Makefile.am	2013-03-11 10:26:01.389927702 -0700
++++ apache-couchdb-1.3.0/src/Makefile.am	2013-03-11 12:20:21.901136744 -0700
+@@ -15,9 +15,4 @@ SUBDIRS = \
+     couch_mrview \
+     couch_replicator \
+     couchdb \
+-    ejson \
+-    erlang-oauth \
+-    etap \
+-    ibrowse \
+-    mochiweb \
+-    snappy
++    ejson
+
+diff -up apache-couchdb-1.3.0.orig/src/ejson/Makefile.am apache-couchdb-1.3.0/src/ejson/Makefile.am
+--- apache-couchdb-1.3.0.orig/src/ejson/Makefile.am	2013-03-11 10:26:01.384927681 -0700
++++ apache-couchdb-1.3.0/src/ejson/Makefile.am	2013-03-11 12:16:49.661477967 -0700
+@@ -44,15 +44,11 @@ EJSON_C_HDRS = \
+ 
+ ejson_file_collection = \
+     ejson.app.in \
+-    ejson.erl \
+-    mochijson2.erl \
+-    mochinum.erl
++    ejson.erl
+ 
+ ejsonebin_make_generated_file_list = \
+     ejson.app \
+-    ejson.beam \
+-    mochijson2.beam \
+-    mochinum.beam
++    ejson.beam
+ 
+ EXTRA_DIST = \
+ 	$(EJSON_C_HDRS) \
+
+diff -up apache-couchdb-1.3.0.orig/test/etap/test_util.erl.in apache-couchdb-1.3.0/test/etap/test_util.erl.in
+--- apache-couchdb-1.3.0.orig/test/etap/test_util.erl.in	2013-03-11 10:26:01.392927716 -0700
++++ apache-couchdb-1.3.0/test/etap/test_util.erl.in	2013-03-11 12:21:17.135309654 -0700
+@@ -25,13 +25,8 @@ builddir() ->
+ 
+ init_code_path() ->
+     Paths = [
+-        "etap",
+         "couchdb",
+-        "ejson",
+-        "erlang-oauth",
+-        "ibrowse",
+-        "mochiweb",
+-        "snappy"
++        "ejson"
+     ],
+     lists:foreach(fun(Name) ->
+         code:add_patha(filename:join([builddir(), "src", Name]))

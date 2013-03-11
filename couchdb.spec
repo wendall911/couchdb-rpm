@@ -3,7 +3,7 @@
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
 Name:       couchdb
-Version:    1.2.1
+Version:    1.3.0
 Release:    1%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
@@ -18,46 +18,51 @@ Patch1:		couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.patch
 Patch2:		couchdb-0002-Install-docs-into-versioned-directory.patch
 Patch3:		couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
 Patch4:		couchdb-0004-Install-into-erllibdir-by-default.patch
-Patch5:		couchdb-0005-Don-t-use-bundled-etap-erlang-oauth-ibrowse-and-moch.patch
+Patch5:		couchdb-0005-Don-t-use-bundled-libraries.patch
 Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
 Patch7:		couchdb-0007-wait-for-couch-stop.patch
 
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  autoconf
+BuildRequires:  autoconf-archive
 BuildRequires:  automake
 BuildRequires:  libtool
-BuildRequires:	curl-devel
-BuildRequires:	erlang-erts
+BuildRequires:	curl-devel >= 7.18.0
+BuildRequires:	erlang-erts >= R13B
 BuildRequires:	erlang-etap
 BuildRequires:	erlang-ibrowse >= 2.2.0
 BuildRequires:	erlang-mochiweb
 BuildRequires:	erlang-oauth
 BuildRequires:	erlang-os_mon
+BuildRequires:	erlang-snappy
 BuildRequires:	help2man
 BuildRequires:	js-devel >= 1.8.5
 BuildRequires:	libicu-devel
 # For /usr/bin/prove
 BuildRequires:	perl(Test::Harness)
 
-Requires:	erlang-crypto
-Requires:	erlang-erts
-Requires:	erlang-ibrowse >= 2.2.0
-Requires:	erlang-inets
-Requires:	erlang-kernel
-Requires:	erlang-mochiweb
-Requires:	erlang-oauth
-Requires:	erlang-sasl
-Requires:	erlang-stdlib
-Requires:	erlang-tools
-Requires:   erlang-os_mon
+Requires:	erlang-crypto%{?_isa}
+# Error:erlang(erlang:max/2) in R12B and below
+# Error:erlang(erlang:min/2) in R12B and below
+Requires:	erlang-erts%{?_isa} >= R13B
+Requires:	erlang-ibrowse%{?_isa} >= 2.2.0
+Requires:	erlang-inets%{?_isa}
+Requires:	erlang-kernel%{?_isa}
+Requires:	erlang-mochiweb%{?_isa}
+Requires:	erlang-oauth%{?_isa}
+Requires:	erlang-os_mon%{?_isa}
+Requires:	erlang-snappy%{?_isa}
+# Error:erlang(unicode:characters_to_binary/1) in R12B and below
+Requires:	erlang-stdlib%{?_isa} >= R13B
+Requires:	erlang-tools%{?_isa}
+Requires:	erlang-xmerl%{?_isa}
 
 #Initscripts
-%if 0%{?fc17}%{?fc18}
-Requires(post): systemd-units
-Requires(preun): systemd-units
-Requires(postun): systemd-units
+%if 0%{?fedora} > 16
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig initscripts
@@ -91,46 +96,46 @@ rm -rf src/erlang-oauth
 rm -rf src/etap
 rm -rf src/ibrowse
 rm -rf src/mochiweb
+rm -rf src/snappy
+
+# More verbose tests
+sed -i -e "s,prove,prove -v,g" test/etap/run.tpl
+
 
 %build
-#./bootstrap
 autoreconf -ivf
-
-
-%configure \
-    --with-erlang=%{_libdir}/erlang/usr/include/ \
-    --libdir=%{_libdir} \
-
+%configure --with-erlang=%{_libdir}/erlang/usr/include
 make %{?_smp_mflags}
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot}
 
 # Install our custom couchdb initscript
 %if 0%{?fedora} > 16
-install -D -m 755 %{SOURCE2} $RPM_BUILD_ROOT%{_unitdir}/%{name}.service
-rm -rf $RPM_BUILD_ROOT/%{_sysconfdir}/rc.d/
-rm -rf $RPM_BUILD_ROOT%{_sysconfdir}/default/
+# Install /etc/tmpfiles.d entry
+install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/tmpfiles.d/%{name}.conf
+# Install systemd entry
+install -D -m 755 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}.service
+rm -rf %{buildroot}/%{_sysconfdir}/rc.d/
+rm -rf %{buildroot}%{_sysconfdir}/default/
 %else
 # Use /etc/sysconfig instead of /etc/default
-mv $RPM_BUILD_ROOT%{_sysconfdir}/{default,sysconfig}
-install -D -m 755 %{SOURCE1} $RPM_BUILD_ROOT%{_initrddir}/%{name}
+mv %{buildroot}%{_sysconfdir}/{default,sysconfig}
+install -D -m 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 %endif
 
-# Install /etc/tmpfiles.d entry
-%if 0%{?fedora} > 14
-install -D -m 644 %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/tmpfiles.d/%{name}.conf
-%endif
+# Remove *.la files
+find %{buildroot} -type f -name "*.la" -delete
 
 
 %check
-make check || exit 1
+make check
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %pre
@@ -144,8 +149,8 @@ exit 0
 %post
 %if 0%{?fedora} > 16
 if [ $1 -eq 1 ] ; then
-    # Initial installation
-    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
+	# Initial installation
+	/usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 %else
 /sbin/chkconfig --add couchdb
@@ -155,9 +160,9 @@ fi
 %preun
 %if 0%{?fedora} > 16
 if [ $1 -eq 0 ] ; then
-    # Package removal, not upgrade
-    /bin/systemctl --no-reload disable couchdb.service > /dev/null 2>&1 || :
-    /bin/systemctl stop couchdb.service > /dev/null 2>&1 || :
+	# Package removal, not upgrade
+	/usr/bin/systemctl --no-reload disable %{name}.service > /dev/null 2>&1 || :
+	/usr/bin/systemctl stop %{name}.service > /dev/null 2>&1 || :
 fi
 %else
 if [ $1 = 0 ] ; then
@@ -169,10 +174,10 @@ fi
 
 %postun
 %if 0%{?fedora} > 16
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+/usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 if [ $1 -ge 1 ] ; then
-    # Package upgrade, not uninstall
-    /bin/systemctl try-restart couchdb.service >/dev/null 2>&1 || :
+	# Package upgrade, not uninstall
+	/usr/bin/systemctl try-restart %{name}.service >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -191,38 +196,39 @@ fi
 
 
 %files
-%defattr(-,root,root,-)
 %doc AUTHORS BUGS CHANGES LICENSE NEWS NOTICE README THANKS
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/local.d
 %dir %{_sysconfdir}/%{name}/default.d
-%config(noreplace) %attr(0644, %{couchdb_user}, root) %{_sysconfdir}/%{name}/default.ini
-%config(noreplace) %attr(0644, %{couchdb_user}, root) %{_sysconfdir}/%{name}/local.ini
+%config(noreplace) %attr(0644, %{couchdb_user}, %{couchdb_group}) %{_sysconfdir}/%{name}/default.ini
+%config(noreplace) %attr(0644, %{couchdb_user}, %{couchdb_group}) %{_sysconfdir}/%{name}/local.ini
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%if 0%{?fedora} > 14
-%{_sysconfdir}/tmpfiles.d/%{name}.conf
-%endif
 %if 0%{?fedora} > 16
+%{_sysconfdir}/tmpfiles.d/%{name}.conf
 %{_unitdir}/%{name}.service
 %else
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %{_initrddir}/%{name}
 %endif
 %{_bindir}/%{name}
-%{_bindir}/couchjs
 %{_bindir}/couch-config
-%{_libdir}/erlang/lib/couch-%{version}
-%{_libdir}/erlang/lib/snappy-1.0.3
-%{_libdir}/erlang/lib/ejson-0.1.0
+%{_bindir}/couchjs
+%{_libdir}/erlang/lib/couch-%{version}/
+%{_libdir}/erlang/lib/ejson-0.1.0/
 %{_datadir}/%{name}
 %{_mandir}/man1/%{name}.1.*
 %{_mandir}/man1/couchjs.1.*
-%dir %attr(0755, %{couchdb_user}, root) %{_localstatedir}/log/%{name}
-%dir %attr(0755, %{couchdb_user}, root) %{_localstatedir}/run/%{name}
-%dir %attr(0755, %{couchdb_user}, root) %{_localstatedir}/lib/%{name}
+%dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/log/%{name}
+%dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/run/%{name}
+%dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/lib/%{name}
 
 
 %changelog
+* Mon Mar 11 2013 Wendall Cada <wendallc@83864.com> - 1.3.0-1
+- Updated to version 1.3.0
+- Merged some changes from Peter Lemenkov
+- Unbundle snappy
+
 * Wed Jan 2 2013 Wendall Cada <wendallc@83864.com> - 1.2.1-1
 - Updated version to 1.2.1
 

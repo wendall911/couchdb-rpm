@@ -1,19 +1,7 @@
-From 0f86f6e868dbdcbf832f28639bdc4c23e3304799 Mon Sep 17 00:00:00 2001
-From: Peter Lemenkov <lemenkov@gmail.com>
-Date: Sun, 13 Feb 2011 13:52:38 +0300
-Subject: [PATCH 01/13] Do not gzip doc-files and do not install installation
- instructions
-
-Signed-off-by: Peter Lemenkov <lemenkov@gmail.com>
----
- Makefile.am |   57 +++++++++------------------------------------------------
- 1 files changed, 9 insertions(+), 48 deletions(-)
-
-diff --git a/Makefile.am b/Makefile.am
-index 6530287..dc4b8ce 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -15,18 +15,15 @@ SUBDIRS = bin etc src share test var utils
+diff -up apache-couchdb-1.3.0.orig/Makefile.am apache-couchdb-1.3.0/Makefile.am
+--- apache-couchdb-1.3.0.orig/Makefile.am	2013-03-11 10:26:01.394927725 -0700
++++ apache-couchdb-1.3.0/Makefile.am	2013-03-11 11:37:31.331500639 -0700
+@@ -15,18 +15,15 @@ SUBDIRS = bin etc src share test var uti
  ACLOCAL_AMFLAGS = -I m4
  
  localdoc_DATA = \
@@ -41,49 +29,56 @@ index 6530287..dc4b8ce 100644
  
  DISTCLEANFILES = $(localdoc_DATA)
  
-@@ -45,42 +42,6 @@ EXTRA_DIST = \
-     THANKS \
+@@ -35,9 +32,6 @@ EXTRA_DIST = \
+     BUGS \
+     CHANGES \
+     DEVELOPERS \
+-    INSTALL \
+-    INSTALL.Unix \
+-    INSTALL.Windows \
+     LICENSE \
+     NEWS \
+     NOTICE \
+@@ -48,42 +42,6 @@ EXTRA_DIST = \
+     build-aux/sphinx-touch \
      license.skip
  
--AUTHORS.gz: $(top_srcdir)/AUTHORS
--	-gzip -9 < $< > $@
+-AUTHORS.gz: AUTHORS
+-	gzip -9 < $< > $@
 -
--BUGS.gz: $(top_srcdir)/BUGS
--	-gzip -9 < $< > $@
+-BUGS.gz: BUGS
+-	gzip -9 < $< > $@
 -
--CHANGES.gz: $(top_srcdir)/CHANGES
--	-gzip -9 < $< > $@
+-CHANGES.gz: CHANGES
+-	gzip -9 < $< > $@
 -
--DEVELOPERS.gz: $(top_srcdir)/DEVELOPERS
--	-gzip -9 < $< > $@
+-DEVELOPERS.gz: DEVELOPERS
+-	gzip -9 < $< > $@
 -
--INSTALL.gz: $(top_srcdir)/INSTALL
--	-gzip -9 < $< > $@
+-INSTALL.gz: INSTALL
+-	gzip -9 < $< > $@
 -
--INSTALL.Unix.gz: $(top_srcdir)/INSTALL.Unix
--	-gzip -9 < $< > $@
+-INSTALL.Unix.gz: INSTALL.Unix
+-	gzip -9 < $< > $@
 -
--INSTALL.Windows.gz: $(top_srcdir)/INSTALL.Windows
--	-gzip -9 < $< > $@
+-INSTALL.Windows.gz: INSTALL.Windows
+-	gzip -9 < $< > $@
 -
--LICENSE.gz: $(top_srcdir)/LICENSE
--	-gzip -9 < $< > $@
+-LICENSE.gz: LICENSE
+-	gzip -9 < $< > $@
 -
--NEWS.gz: $(top_srcdir)/NEWS
--	-gzip -9 < $< > $@
+-NEWS.gz: NEWS
+-	gzip -9 < $< > $@
 -
--NOTICE.gz: $(top_srcdir)/NOTICE
--	-gzip -9 < $< > $@
+-NOTICE.gz: NOTICE
+-	gzip -9 < $< > $@
 -
--README.gz: $(top_srcdir)/README
--	-gzip -9 < $< > $@
+-README.gz: README
+-	gzip -9 < $< > $@
 -
--THANKS.gz: $(top_srcdir)/THANKS
--	-gzip -9 < $< > $@
+-THANKS.gz: THANKS
+-	gzip -9 < $< > $@
 -
- check: dev
- 	$(top_builddir)/test/etap/run
- 
--- 
-1.7.5.1
-
+ check: dev check-js
+ if TESTS
+ 	$(top_builddir)/test/etap/run $(top_srcdir)/test/etap
