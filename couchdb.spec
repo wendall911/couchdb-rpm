@@ -20,7 +20,7 @@ Patch3:		couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
 Patch4:		couchdb-0004-Install-into-erllibdir-by-default.patch
 Patch5:		couchdb-0005-Don-t-use-bundled-libraries.patch
 Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
-Patch7:		couchdb-0007-wait-for-couch-stop.patch
+Patch7:		couchdb-0007-fix-javascript-tests.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -30,7 +30,6 @@ BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:	curl-devel >= 7.18.0
 BuildRequires:	erlang-erts >= R13B
-BuildRequires:	erlang-etap
 BuildRequires:	erlang-ibrowse >= 2.2.0
 BuildRequires:	erlang-mochiweb
 BuildRequires:	erlang-oauth
@@ -89,11 +88,10 @@ JavaScript acting as the default view definition language.
 %patch4 -p1 -b .install_into_erldir
 %patch5 -p1 -b .remove_bundled_libs
 %patch6 -p1 -b .workaround_for_system_wide_ibrowse
-%patch7 -p1 -b .remove_pid_file
+%patch7 -p1 -b .fix_javascript_tests
 
 # Remove bundled libraries
 rm -rf src/erlang-oauth
-rm -rf src/etap
 rm -rf src/ibrowse
 rm -rf src/mochiweb
 rm -rf src/snappy
@@ -214,18 +212,28 @@ fi
 %{_bindir}/couch-config
 %{_bindir}/couchjs
 %{_libdir}/erlang/lib/couch-%{version}/
+%{_libdir}/erlang/lib/couch_index-0.1/
+%{_libdir}/erlang/lib/couch_mrview-0.1/
+%{_libdir}/erlang/lib/couch_replicator-0.1/
 %{_libdir}/erlang/lib/ejson-0.1.0/
+%{_libdir}/erlang/lib/etap/
 %{_datadir}/%{name}
 %{_mandir}/man1/%{name}.1.*
 %{_mandir}/man1/couchjs.1.*
+%{_infodir}/*
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/log/%{name}
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/run/%{name}
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/lib/%{name}
 
 
 %changelog
+* Tue Apr 9 2013 Wendall Cada <wendallc@83864.com> - 1.3.0-2
+- Updated to version 1.3.0 release.
+- Removed init script patch, now a part of release.
+- Added bundled etap, as tests fail without it.
+
 * Mon Mar 11 2013 Wendall Cada <wendallc@83864.com> - 1.3.0-1
-- Updated to version 1.3.0
+- Updated to version 1.3.0.rc1
 - Merged some changes from Peter Lemenkov
 - Unbundle snappy
 
