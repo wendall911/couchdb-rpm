@@ -3,7 +3,7 @@
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
 Name:       couchdb
-Version:    1.2.1
+Version:    1.2.2
 Release:    1%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
@@ -20,7 +20,6 @@ Patch3:		couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
 Patch4:		couchdb-0004-Install-into-erllibdir-by-default.patch
 Patch5:		couchdb-0005-Don-t-use-bundled-etap-erlang-oauth-ibrowse-and-moch.patch
 Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
-Patch7:		couchdb-0007-wait-for-couch-stop.patch
 
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -84,7 +83,6 @@ JavaScript acting as the default view definition language.
 %patch4 -p1 -b .install_into_erldir
 %patch5 -p1 -b .remove_bundled_libs
 %patch6 -p1 -b .workaround_for_system_wide_ibrowse
-%patch7 -p1 -b .remove_pid_file
 
 # Remove bundled libraries
 rm -rf src/erlang-oauth
@@ -223,6 +221,10 @@ fi
 
 
 %changelog
+* Tue Apr 9 2013 Wendall Cada <wendallc@83864.com> - 1.2.2-1
+- Updated version to 1.2.2
+- Removed timeout to wait for stop patch.
+
 * Wed Jan 2 2013 Wendall Cada <wendallc@83864.com> - 1.2.1-1
 - Updated version to 1.2.1
 
