@@ -4,23 +4,23 @@
 
 Name:       couchdb
 Version:    1.3.0
-Release:    1%{?dist}
+Release:    3%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
 License:    ASL 2.0
 URL:        http://couchdb.apache.org/
-Source0:    http://www.apache.org/dist/%{name}/%{version}/apache-%{name}-%{version}.tar.gz
+Source0:    http://www.apache.org/dyn/closer.cgi?path=/%{name}/%{version}/apache-%{name}-%{version}.tar.gz
 Source1:    %{name}.init
 Source2:    %{name}.service
-Source3:	%{name}.tmpfiles.conf
-Patch1:		couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.patch
-Patch2:		couchdb-0002-Install-docs-into-versioned-directory.patch
-Patch3:		couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
-Patch4:		couchdb-0004-Install-into-erllibdir-by-default.patch
-Patch5:		couchdb-0005-Don-t-use-bundled-libraries.patch
-Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
-Patch7:		couchdb-0007-fix-javascript-tests.patch
+Source3:    %{name}.tmpfiles.conf
+Patch1:     couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.patch
+Patch2:     couchdb-0002-Install-docs-into-versioned-directory.patch
+Patch3:     couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
+Patch4:     couchdb-0004-Install-into-erllibdir-by-default.patch
+Patch5:     couchdb-0005-Don-t-use-bundled-libraries.patch
+Patch6:     couchdb-0006-Fixes-for-system-wide-ibrowse.patch
+Patch7:     couchdb-0007-fix-javascript-tests.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -28,43 +28,43 @@ BuildRequires:  autoconf
 BuildRequires:  autoconf-archive
 BuildRequires:  automake
 BuildRequires:  libtool
-BuildRequires:	curl-devel >= 7.18.0
-BuildRequires:	erlang-erts >= R13B
-BuildRequires:	erlang-ibrowse >= 2.2.0
-BuildRequires:	erlang-mochiweb
-BuildRequires:	erlang-oauth
-BuildRequires:	erlang-os_mon
-BuildRequires:	erlang-snappy
-BuildRequires:	help2man
-BuildRequires:	js-devel >= 1.8.5
-BuildRequires:	libicu-devel
+BuildRequires:  curl-devel >= 7.18.0
+BuildRequires:  erlang-erts >= R13B
+BuildRequires:  erlang-ibrowse >= 2.2.0
+BuildRequires:  erlang-mochiweb
+BuildRequires:  erlang-oauth
+BuildRequires:  erlang-os_mon
+BuildRequires:  erlang-snappy
+BuildRequires:  help2man
+BuildRequires:  js-devel >= 1.8.5
+BuildRequires:  libicu-devel
 # For /usr/bin/prove
-BuildRequires:	perl(Test::Harness)
+BuildRequires:  perl(Test::Harness)
 
-Requires:	erlang-crypto%{?_isa}
+Requires:    erlang-crypto%{?_isa}
 # Error:erlang(erlang:max/2) in R12B and below
 # Error:erlang(erlang:min/2) in R12B and below
-Requires:	erlang-erts%{?_isa} >= R13B
-Requires:	erlang-ibrowse%{?_isa} >= 2.2.0
-Requires:	erlang-inets%{?_isa}
-Requires:	erlang-kernel%{?_isa}
-Requires:	erlang-mochiweb%{?_isa}
-Requires:	erlang-oauth%{?_isa}
-Requires:	erlang-os_mon%{?_isa}
-Requires:	erlang-snappy%{?_isa}
+Requires:    erlang-erts%{?_isa} >= R13B
+Requires:    erlang-ibrowse%{?_isa} >= 2.2.0
+Requires:    erlang-inets%{?_isa}
+Requires:    erlang-kernel%{?_isa}
+Requires:    erlang-mochiweb%{?_isa}
+Requires:    erlang-oauth%{?_isa}
+Requires:    erlang-os_mon%{?_isa}
+Requires:    erlang-snappy%{?_isa}
 # Error:erlang(unicode:characters_to_binary/1) in R12B and below
-Requires:	erlang-stdlib%{?_isa} >= R13B
-Requires:	erlang-tools%{?_isa}
-Requires:	erlang-xmerl%{?_isa}
+Requires:    erlang-stdlib%{?_isa} >= R13B
+Requires:    erlang-tools%{?_isa}
+Requires:    erlang-xmerl%{?_isa}
 
 #Initscripts
 %if 0%{?fedora} > 16
-Requires(post): systemd
-Requires(preun): systemd
+Requires(post): systemd info
+Requires(preun): systemd info
 Requires(postun): systemd
 %else
-Requires(post): chkconfig
-Requires(preun): chkconfig initscripts
+Requires(post): chkconfig info
+Requires(preun): chkconfig initscripts info
 %endif
 
 # Users and groups
@@ -127,6 +127,9 @@ install -D -m 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 # Remove *.la files
 find %{buildroot} -type f -name "*.la" -delete
 
+# Remove generated info files
+rm -f %{buildroot}%{_infodir}/dir
+
 
 %check
 make check
@@ -147,20 +150,21 @@ exit 0
 %post
 %if 0%{?fedora} > 16
 if [ $1 -eq 1 ] ; then
-	# Initial installation
-	/usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+    # Initial installation
+    /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 %else
 /sbin/chkconfig --add couchdb
 %endif
+/sbin/install-info %{_infodir}/CouchDB.gz %{_infodir}/dir || :
 
 
 %preun
 %if 0%{?fedora} > 16
 if [ $1 -eq 0 ] ; then
-	# Package removal, not upgrade
-	/usr/bin/systemctl --no-reload disable %{name}.service > /dev/null 2>&1 || :
-	/usr/bin/systemctl stop %{name}.service > /dev/null 2>&1 || :
+    # Package removal, not upgrade
+    /usr/bin/systemctl --no-reload disable %{name}.service > /dev/null 2>&1 || :
+    /usr/bin/systemctl stop %{name}.service > /dev/null 2>&1 || :
 fi
 %else
 if [ $1 = 0 ] ; then
@@ -168,14 +172,15 @@ if [ $1 = 0 ] ; then
     /sbin/chkconfig --del couchdb
 fi
 %endif
+/sbin/install-info --delete %{_infodir}/CouchDB.gz %{_infodir}/dir || :
 
 
 %postun
 %if 0%{?fedora} > 16
 /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 if [ $1 -ge 1 ] ; then
-	# Package upgrade, not uninstall
-	/usr/bin/systemctl try-restart %{name}.service >/dev/null 2>&1 || :
+    # Package upgrade, not uninstall
+    /usr/bin/systemctl try-restart %{name}.service >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -220,13 +225,17 @@ fi
 %{_datadir}/%{name}
 %{_mandir}/man1/%{name}.1.*
 %{_mandir}/man1/couchjs.1.*
-%{_infodir}/*
+%{_infodir}/CouchDB.gz
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/log/%{name}
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/run/%{name}
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/lib/%{name}
 
 
 %changelog
+* Wed Apr 10 2013 Wendall Cada <wendallc@83864.com> - 1.3.0-3
+- File cleanup
+- Added proper support for info file
+
 * Tue Apr 9 2013 Wendall Cada <wendallc@83864.com> - 1.3.0-2
 - Updated to version 1.3.0 release.
 - Removed init script patch, now a part of release.
