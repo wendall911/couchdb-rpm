@@ -1,6 +1,18 @@
-diff -up apache-couchdb-1.3.0.orig/configure.ac apache-couchdb-1.3.0/configure.ac
---- apache-couchdb-1.3.0.orig/configure.ac	2013-03-11 10:26:01.394927725 -0700
-+++ apache-couchdb-1.3.0/configure.ac	2013-03-11 12:18:56.595870867 -0700
+From fb367b47472530196e3cd7ce49e25eb388cf344c Mon Sep 17 00:00:00 2001
+From: Wendall Cada <wendallc@apache.org>
+Date: Tue, 9 Apr 2013 22:10:18 -0700
+Subject: [PATCH] Removing bundled libraries.
+
+---
+ configure.ac               | 6 ------
+ src/Makefile.am            | 6 +-----
+ test/etap/test_util.erl.in | 6 +-----
+ 3 files changed, 2 insertions(+), 16 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 53e23f1..b664828 100644
+--- a/configure.ac
++++ b/configure.ac
 @@ -23,7 +23,6 @@ AC_CONFIG_AUX_DIR([build-aux])
  AC_CONFIG_MACRO_DIR([m4])
  
@@ -9,12 +21,12 @@ diff -up apache-couchdb-1.3.0.orig/configure.ac apache-couchdb-1.3.0/configure.a
  
  AM_INIT_AUTOMAKE([1.6.3 foreign])
  
-@@ -726,12 +725,6 @@ AC_CONFIG_FILES([src/couch_replicator/Ma
+@@ -733,12 +732,7 @@ AC_CONFIG_FILES([src/couch_replicator/Makefile])
  AC_CONFIG_FILES([src/couchdb/couch.app.tpl])
  AC_CONFIG_FILES([src/couchdb/Makefile])
  AC_CONFIG_FILES([src/couchdb/priv/Makefile])
 -AC_CONFIG_FILES([src/erlang-oauth/Makefile])
--AC_CONFIG_FILES([src/etap/Makefile])
+ AC_CONFIG_FILES([src/etap/Makefile])
 -AC_CONFIG_FILES([src/ibrowse/Makefile])
 -AC_CONFIG_FILES([src/mochiweb/Makefile])
 -AC_CONFIG_FILES([src/snappy/Makefile])
@@ -22,52 +34,27 @@ diff -up apache-couchdb-1.3.0.orig/configure.ac apache-couchdb-1.3.0/configure.a
  AC_CONFIG_FILES([src/ejson/Makefile])
  AC_CONFIG_FILES([test/Makefile])
  AC_CONFIG_FILES([test/bench/Makefile])
-
-diff -up apache-couchdb-1.3.0.orig/src/Makefile.am apache-couchdb-1.3.0/src/Makefile.am
---- apache-couchdb-1.3.0.orig/src/Makefile.am	2013-03-11 10:26:01.389927702 -0700
-+++ apache-couchdb-1.3.0/src/Makefile.am	2013-03-11 12:20:21.901136744 -0700
-@@ -15,9 +15,4 @@ SUBDIRS = \
-     couch_mrview \
+diff --git a/src/Makefile.am b/src/Makefile.am
+index fbd514c..893e5f3 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -16,8 +16,4 @@ SUBDIRS = \
      couch_replicator \
      couchdb \
--    ejson \
+     ejson \
 -    erlang-oauth \
 -    etap \
 -    ibrowse \
 -    mochiweb \
 -    snappy
-+    ejson
-
-diff -up apache-couchdb-1.3.0.orig/src/ejson/Makefile.am apache-couchdb-1.3.0/src/ejson/Makefile.am
---- apache-couchdb-1.3.0.orig/src/ejson/Makefile.am	2013-03-11 10:26:01.384927681 -0700
-+++ apache-couchdb-1.3.0/src/ejson/Makefile.am	2013-03-11 12:16:49.661477967 -0700
-@@ -44,15 +44,11 @@ EJSON_C_HDRS = \
- 
- ejson_file_collection = \
-     ejson.app.in \
--    ejson.erl \
--    mochijson2.erl \
--    mochinum.erl
-+    ejson.erl
- 
- ejsonebin_make_generated_file_list = \
-     ejson.app \
--    ejson.beam \
--    mochijson2.beam \
--    mochinum.beam
-+    ejson.beam
- 
- EXTRA_DIST = \
- 	$(EJSON_C_HDRS) \
-
-diff -up apache-couchdb-1.3.0.orig/test/etap/test_util.erl.in apache-couchdb-1.3.0/test/etap/test_util.erl.in
---- apache-couchdb-1.3.0.orig/test/etap/test_util.erl.in	2013-03-11 10:26:01.392927716 -0700
-+++ apache-couchdb-1.3.0/test/etap/test_util.erl.in	2013-03-11 12:21:17.135309654 -0700
-@@ -25,13 +25,8 @@ builddir() ->
- 
- init_code_path() ->
++    etap
+diff --git a/test/etap/test_util.erl.in b/test/etap/test_util.erl.in
+index 352714e..cee79ec 100644
+--- a/test/etap/test_util.erl.in
++++ b/test/etap/test_util.erl.in
+@@ -27,11 +27,7 @@ init_code_path() ->
      Paths = [
--        "etap",
+         "etap",
          "couchdb",
 -        "ejson",
 -        "erlang-oauth",
@@ -78,3 +65,6 @@ diff -up apache-couchdb-1.3.0.orig/test/etap/test_util.erl.in apache-couchdb-1.3
      ],
      lists:foreach(fun(Name) ->
          code:add_patha(filename:join([builddir(), "src", Name]))
+-- 
+1.8.1.4
+
