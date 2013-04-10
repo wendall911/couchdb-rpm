@@ -4,22 +4,22 @@
 
 Name:       couchdb
 Version:    1.2.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
 License:    ASL 2.0
 URL:        http://couchdb.apache.org/
-Source0:    http://www.apache.org/dist/%{name}/%{version}/apache-%{name}-%{version}.tar.gz
+Source0:    http://www.apache.org/dyn/closer.cgi?path=/%{name}/source/%{version}/apache-%{name}-%{version}.tar.gz
 Source1:    %{name}.init
 Source2:    %{name}.service
-Source3:	%{name}.tmpfiles.conf
-Patch1:		couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.patch
-Patch2:		couchdb-0002-Install-docs-into-versioned-directory.patch
-Patch3:		couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
-Patch4:		couchdb-0004-Install-into-erllibdir-by-default.patch
-Patch5:		couchdb-0005-Don-t-use-bundled-etap-erlang-oauth-ibrowse-and-moch.patch
-Patch6:		couchdb-0006-Fixes-for-system-wide-ibrowse.patch
+Source3:    %{name}.tmpfiles.conf
+Patch1:     couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.patch
+Patch2:     couchdb-0002-Install-docs-into-versioned-directory.patch
+Patch3:     couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
+Patch4:     couchdb-0004-Install-into-erllibdir-by-default.patch
+Patch5:     couchdb-0005-Don-t-use-bundled-etap-erlang-oauth-ibrowse-and-moch.patch
+Patch6:     couchdb-0006-Fixes-for-system-wide-ibrowse.patch
 
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -27,29 +27,29 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
-BuildRequires:	curl-devel
-BuildRequires:	erlang-erts
-BuildRequires:	erlang-etap
-BuildRequires:	erlang-ibrowse >= 2.2.0
-BuildRequires:	erlang-mochiweb
-BuildRequires:	erlang-oauth
-BuildRequires:	erlang-os_mon
-BuildRequires:	help2man
-BuildRequires:	js-devel >= 1.8.5
-BuildRequires:	libicu-devel
+BuildRequires:  curl-devel
+BuildRequires:  erlang-erts
+BuildRequires:  erlang-etap
+BuildRequires:  erlang-ibrowse >= 2.2.0
+BuildRequires:  erlang-mochiweb
+BuildRequires:  erlang-oauth
+BuildRequires:  erlang-os_mon
+BuildRequires:  help2man
+BuildRequires:  js-devel >= 1.8.5
+BuildRequires:  libicu-devel
 # For /usr/bin/prove
-BuildRequires:	perl(Test::Harness)
+BuildRequires:perl(Test::Harness)
 
-Requires:	erlang-crypto
-Requires:	erlang-erts
-Requires:	erlang-ibrowse >= 2.2.0
-Requires:	erlang-inets
-Requires:	erlang-kernel
-Requires:	erlang-mochiweb
-Requires:	erlang-oauth
-Requires:	erlang-sasl
-Requires:	erlang-stdlib
-Requires:	erlang-tools
+Requires:   erlang-crypto
+Requires:   erlang-erts
+Requires:   erlang-ibrowse >= 2.2.0
+Requires:   erlang-inets
+Requires:   erlang-kernel
+Requires:   erlang-mochiweb
+Requires:   erlang-oauth
+Requires:   erlang-sasl
+Requires:   erlang-stdlib
+Requires:   erlang-tools
 Requires:   erlang-os_mon
 
 #Initscripts
@@ -221,6 +221,9 @@ fi
 
 
 %changelog
+* Tue Apr 10 2013 Wendall Cada <wendallc@83864.com> - 1.2.2-2
+- Cleaup spec file and add proper url for sources mirror.
+
 * Tue Apr 9 2013 Wendall Cada <wendallc@83864.com> - 1.2.2-1
 - Updated version to 1.2.2
 - Removed timeout to wait for stop patch.
