@@ -30,7 +30,6 @@ exec=/usr/bin/$prog
 COUCHDB_USER=couchdb
 COUCHDB_STDOUT_FILE=/dev/null
 COUCHDB_STDERR_FILE=/dev/null
-COUCHDB_RESPAWN_TIMEOUT=0
 COUCHDB_OPTIONS=
 
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
@@ -43,7 +42,6 @@ start() {
     echo -n $"Starting $prog: "
     rh_status_q && echo -n "already running" && warning && echo && exit 0
     daemon --user $COUCHDB_USER "$exec \
-	-r $COUCHDB_RESPAWN_TIMEOUT \
 	-o $COUCHDB_STDOUT_FILE \
 	-e $COUCHDB_STDERR_FILE \
 	-p $pidfile \
