@@ -46,13 +46,13 @@ Requires:    erlang-crypto%{?_isa}
 # Error:erlang(erlang:max/2) in R12B and below
 # Error:erlang(erlang:min/2) in R12B and below
 Requires:    erlang-erts%{?_isa} >= R13B
-Requires:    erlang-ibrowse%{?_isa} >= 2.2.0
+# Requires:    erlang-ibrowse%{?_isa} >= 2.2.0
 Requires:    erlang-inets%{?_isa}
 Requires:    erlang-kernel%{?_isa}
-Requires:    erlang-mochiweb%{?_isa}
-Requires:    erlang-oauth%{?_isa}
+# Requires:    erlang-mochiweb%{?_isa}
+# Requires:    erlang-oauth%{?_isa}
 Requires:    erlang-os_mon%{?_isa}
-Requires:    erlang-snappy%{?_isa}
+# Requires:    erlang-snappy%{?_isa}
 # Error:erlang(unicode:characters_to_binary/1) in R12B and below
 Requires:    erlang-stdlib%{?_isa} >= R13B
 Requires:    erlang-tools%{?_isa}
