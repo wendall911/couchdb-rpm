@@ -3,8 +3,8 @@
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
 Name:       couchdb
-Version:    1.3.0
-Release:    3%{?dist}
+Version:    1.5.0
+Release:    1%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -41,6 +41,7 @@ BuildRequires:  libicu-devel
 # For /usr/bin/prove
 BuildRequires:  perl(Test::Harness)
 
+Requires:    erlang-asn1%{?_isa}
 Requires:    erlang-crypto%{?_isa}
 # Error:erlang(erlang:max/2) in R12B and below
 # Error:erlang(erlang:min/2) in R12B and below
@@ -85,16 +86,16 @@ JavaScript acting as the default view definition language.
 %patch1 -p1 -b .dont_gzip
 %patch2 -p1 -b .use_versioned_docdir
 %patch3 -p1 -b .more_init_dirs
-%patch4 -p1 -b .install_into_erldir
-%patch5 -p1 -b .remove_bundled_libs
-%patch6 -p1 -b .workaround_for_system_wide_ibrowse
-%patch7 -p1 -b .fix_javascript_tests
+%patch4 -p1 -b .install_into_erllibdir
+# %patch5 -p1 -b .remove_bundled_libs
+# %patch6 -p1 -b .workaround_for_system_wide_ibrowse
+# %patch7 -p1 -b .fix_javascript_tests
 
 # Remove bundled libraries
-rm -rf src/erlang-oauth
-rm -rf src/ibrowse
-rm -rf src/mochiweb
-rm -rf src/snappy
+# rm -rf src/erlang-oauth
+# rm -rf src/ibrowse
+# rm -rf src/mochiweb
+# rm -rf src/snappy
 
 # More verbose tests
 sed -i -e "s,prove,prove -v,g" test/etap/run.tpl
@@ -199,7 +200,8 @@ fi
 
 
 %files
-%doc AUTHORS BUGS CHANGES LICENSE NEWS NOTICE README THANKS
+# %doc AUTHORS BUGS CHANGES LICENSE NEWS NOTICE README THANKS
+%doc AUTHORS BUGS LICENSE NOTICE README.rst THANKS
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/local.d
 %dir %{_sysconfdir}/%{name}/default.d
@@ -220,8 +222,14 @@ fi
 %{_libdir}/erlang/lib/couch_index-0.1/
 %{_libdir}/erlang/lib/couch_mrview-0.1/
 %{_libdir}/erlang/lib/couch_replicator-0.1/
+%{_libdir}/erlang/lib/couch_dbupdates-0.1/
+%{_libdir}/erlang/lib/couch_plugins-0.1/
 %{_libdir}/erlang/lib/ejson-0.1.0/
 %{_libdir}/erlang/lib/etap/
+%{_libdir}/erlang/lib/erlang-oauth/
+%{_libdir}/erlang/lib/ibrowse-2.2.0/
+%{_libdir}/erlang/lib/mochiweb-1.4.1/
+%{_libdir}/erlang/lib/snappy-1.0.5/
 %{_datadir}/%{name}
 %{_mandir}/man1/%{name}.1.*
 %{_mandir}/man1/couchjs.1.*
@@ -232,6 +240,9 @@ fi
 
 
 %changelog
+* Fri Jan 17 2014 Paul Mietz Egli <paul@obscure.com> - 1.5.0-1
+- Updated patches and scripts to work with the CouchDb 1.5.0 release
+
 * Wed Apr 10 2013 Wendall Cada <wendallc@83864.com> - 1.3.0-3
 - File cleanup
 - Added proper support for info file
