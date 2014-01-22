@@ -30,11 +30,11 @@ BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:  curl-devel >= 7.18.0
 BuildRequires:  erlang-erts >= R13B
-BuildRequires:  erlang-ibrowse >= 2.2.0
-BuildRequires:  erlang-mochiweb
-BuildRequires:  erlang-oauth
+# BuildRequires:  erlang-ibrowse >= 2.2.0
+# BuildRequires:  erlang-mochiweb
+# BuildRequires:  erlang-oauth
 BuildRequires:  erlang-os_mon
-BuildRequires:  erlang-snappy
+# BuildRequires:  erlang-snappy
 BuildRequires:  help2man
 BuildRequires:  js-devel >= 1.8.5
 BuildRequires:  libicu-devel
