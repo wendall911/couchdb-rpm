@@ -271,7 +271,7 @@ fi
 * Wed Mar 21 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-3 
 - New version based on cd238b42d13
 
-* Wed Mar 15 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-2 
+* Thu Mar 15 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-2 
 - Removed spidermonkey configuration patch (Fixed)
 - Removed etap patch (Fixed)
 - Removed spidermonkey configuration flags not required with new configure
