@@ -334,7 +334,7 @@ fi
 * Tue Jun 22 2010 Peter Lemenkov <lemenkov@gmail.com> 0.11.0-2
 - Massive spec cleanup
 
-* Tue Jun 18 2010 Peter Lemenkov <lemenkov@gmail.com> 0.11.0-1
+* Tue Jun 22 2010 Peter Lemenkov <lemenkov@gmail.com> 0.11.0-1
 - Ver. 0.11.0 (a feature-freeze release candidate)
 
 * Fri Jun 18 2010 Peter Lemenkov <lemenkov@gmail.com> 0.10.2-13
