@@ -10,10 +10,11 @@ Summary:    A document database server, accessible via a RESTful JSON API
 Group:      Applications/Databases
 License:    ASL 2.0
 URL:        http://couchdb.apache.org/
-Source0:    http://www.apache.org/dyn/closer.cgi?path=/%{name}/%{version}/apache-%{name}-%{version}.tar.gz
-Source1:    %{name}.init
-Source2:    %{name}.service
-Source3:    %{name}.tmpfiles.conf
+Source0:    http://www.apache.org/dist/%{name}/source/%{version}/apache-%{name}-%{version}.tar.gz
+Source1:    http://www.apache.org/dist/%{name}/source/%{version}/apache-%{name}-%{version}.tar.gz.asc
+Source2:    %{name}.init
+Source3:    %{name}.service
+Source4:    %{name}.tmpfiles.conf
 Patch1:     couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.patch
 Patch2:     couchdb-0002-Install-docs-into-versioned-directory.patch
 Patch3:     couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
