@@ -114,15 +114,15 @@ make install DESTDIR=%{buildroot}
 # Install our custom couchdb initscript
 %if 0%{?fedora} > 16
 # Install /etc/tmpfiles.d entry
-install -D -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/tmpfiles.d/%{name}.conf
+install -D -m 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/tmpfiles.d/%{name}.conf
 # Install systemd entry
-install -D -m 755 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}.service
+install -D -m 755 %{SOURCE3} %{buildroot}%{_unitdir}/%{name}.service
 rm -rf %{buildroot}/%{_sysconfdir}/rc.d/
 rm -rf %{buildroot}%{_sysconfdir}/default/
 %else
 # Use /etc/sysconfig instead of /etc/default
 mv %{buildroot}%{_sysconfdir}/{default,sysconfig}
-install -D -m 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
+install -D -m 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
 %endif
 
 # Remove *.la files
