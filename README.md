@@ -16,7 +16,7 @@ These are written and tested against couchdb-1.2.0+
 * Setup rpmbuild
   * [Instructions](http://wiki.centos.org/HowTos/SetupRpmBuildEnvironment)
 * If you want a ~4X faster couchdb replace js-devel-1.7, build and install working js-devel-1.8.5
-  * [README_JS_DEVEL.md](https://github.com/wendall911/couchdb-rpm/blob/master/README_JS_DEVEL.md)
+  * [js185](https://github.com/wendall911/js185)
 * Install js and js-devel rpms from step above or continue
 
 ### Fedora/Centos Step 2
@@ -33,6 +33,8 @@ These are written and tested against couchdb-1.2.0+
 * Install mock
   * [Notes on mock usage](https://fedoraproject.org/wiki/Using_Mock_to_test_package_builds)
 * Checkout this repo. All commands from within this repo.
+* CentOS build
+  * copy centos-6-i386.cfg and centos-6-x86_64.cfg to /etc/mock/
 * Fetch sources
   * spectool -g -R -C ./ couchdb.spec
 * Build SRPM
@@ -47,7 +49,6 @@ These are written and tested against couchdb-1.2.0+
   * cp /var/lib/mock/epel-6-x86_64/result/ ./
   * cp /var/lib/mock/epel-6-x86_64/result/ ./
   * cp /var/lib/mock/epel-6-x86_64/result/ ./
-
 
 ## Prerelease Notes
 * Checkout couchdb from https://git-wip-us.apache.org/repos/asf/couchdb.git
