@@ -5,7 +5,6 @@ Subject: [PATCH] Removing bundled libraries.
 
 ---
  configure.ac               | 6 ------
- src/Makefile.am            | 6 +-----
  test/etap/test_util.erl.in | 6 +-----
  3 files changed, 2 insertions(+), 16 deletions(-)
 
@@ -13,7 +12,7 @@ diff --git a/configure.ac b/configure.ac
 index 53e23f1..b664828 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -23,7 +23,6 @@ AC_CONFIG_AUX_DIR([build-aux])
+@@ -22,7 +22,6 @@ AC_CONFIG_AUX_DIR([build-aux])
  AC_CONFIG_MACRO_DIR([m4])
  
  AC_CONFIG_HEADERS([config.h])
@@ -21,7 +20,7 @@ index 53e23f1..b664828 100644
  
  AM_INIT_AUTOMAKE([1.6.3 foreign])
  
-@@ -733,12 +732,7 @@ AC_CONFIG_FILES([src/couch_replicator/Makefile])
+@@ -740,12 +739,7 @@ AC_CONFIG_FILES([src/couchjs-node/Makefile])
  AC_CONFIG_FILES([src/couchdb/couch.app.tpl])
  AC_CONFIG_FILES([src/couchdb/Makefile])
  AC_CONFIG_FILES([src/couchdb/priv/Makefile])
@@ -34,25 +33,11 @@ index 53e23f1..b664828 100644
  AC_CONFIG_FILES([src/ejson/Makefile])
  AC_CONFIG_FILES([test/Makefile])
  AC_CONFIG_FILES([test/bench/Makefile])
-diff --git a/src/Makefile.am b/src/Makefile.am
-index fbd514c..893e5f3 100644
---- a/src/Makefile.am
-+++ b/src/Makefile.am
-@@ -16,8 +16,4 @@ SUBDIRS = \
-     couch_replicator \
-     couchdb \
-     ejson \
--    erlang-oauth \
--    etap \
--    ibrowse \
--    mochiweb \
--    snappy
-+    etap
 diff --git a/test/etap/test_util.erl.in b/test/etap/test_util.erl.in
 index 352714e..cee79ec 100644
 --- a/test/etap/test_util.erl.in
 +++ b/test/etap/test_util.erl.in
-@@ -27,11 +27,7 @@ init_code_path() ->
+@@ -27,11 +27,7 @@
      Paths = [
          "etap",
          "couchdb",
@@ -65,6 +50,18 @@ index 352714e..cee79ec 100644
      ],
      lists:foreach(fun(Name) ->
          code:add_patha(filename:join([builddir(), "src", Name]))
--- 
-1.8.1.4
-
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -18,11 +18,7 @@
+     couch_replicator \
+     couchdb \
+     ejson \
+-    erlang-oauth \
+     etap \
+-    ibrowse \
+-    mochiweb \
+-    snappy \
+     couchjs-node
+ 
+ EXTRA_DIST = \
+--
