@@ -19,9 +19,6 @@ Patch1:     couchdb-0001-Do-not-gzip-doc-files-and-do-not-install-installatio.pa
 Patch2:     couchdb-0002-Install-docs-into-versioned-directory.patch
 Patch3:     couchdb-0003-More-directories-to-search-for-place-for-init-script.patch
 Patch4:     couchdb-0004-Install-into-erllibdir-by-default.patch
-Patch5:     couchdb-0005-Don-t-use-bundled-libraries.patch
-Patch6:     couchdb-0006-Fixes-for-system-wide-ibrowse.patch
-Patch7:     couchdb-0007-fix-javascript-tests.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
