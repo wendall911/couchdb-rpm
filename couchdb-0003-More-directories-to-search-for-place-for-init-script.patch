@@ -1,7 +1,7 @@
-diff -up apache-couchdb-1.3.0.orig/configure.ac apache-couchdb-1.3.0/configure.ac
---- apache-couchdb-1.3.0.orig/configure.ac	2013-03-11 09:49:50.975637942 -0700
-+++ apache-couchdb-1.3.0/configure.ac	2013-03-11 10:03:52.363706024 -0700
-@@ -519,17 +519,23 @@ launchd_enabled=false
+diff -up apache-couchdb-1.5.0.orig/configure.ac apache-couchdb-1.5.0/configure.ac
+--- apache-couchdb-1.5.0.orig/configure.ac	2013-03-11 09:49:50.975637942 -0700
++++ apache-couchdb-1.5.0/configure.ac	2013-03-11 10:03:52.363706024 -0700
+@@ -524,17 +524,23 @@ launchd_enabled=false
  
  if test "$use_init" = "yes"; then
     AC_MSG_CHECKING(location of init directory)

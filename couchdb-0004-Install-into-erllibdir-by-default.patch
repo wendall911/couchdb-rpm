@@ -1,18 +1,6 @@
-From e25c39956757cd457737ae8cba60a488b259e582 Mon Sep 17 00:00:00 2001
-From: Peter Lemenkov <lemenkov@gmail.com>
-Date: Sun, 13 Feb 2011 14:36:36 +0300
-Subject: [PATCH 04/13] Install into erllibdir by default
-
-Signed-off-by: Peter Lemenkov <lemenkov@gmail.com>
----
- configure.ac |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/configure.ac b/configure.ac
-index 4ac64f9..248bff7 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -363,7 +363,7 @@ AC_SUBST([bug_uri], ["LOCAL_BUG_URI"])
+@@ -694,7 +694,7 @@
  AC_SUBST([localconfdir], [${sysconfdir}/${package_identifier}])
  AC_SUBST([localdatadir], [${datadir}/${package_identifier}])
  AC_SUBST([localdocdir], [${datadir}/doc/${package_identifier}-${version}])
@@ -21,7 +9,7 @@ index 4ac64f9..248bff7 100644
  AC_SUBST([localstatelibdir], [${localstatedir}/lib/${package_identifier}])
  AC_SUBST([localstatelogdir], [${localstatedir}/log/${package_identifier}])
  AC_SUBST([localstaterundir], [${localstatedir}/run/${package_identifier}])
-@@ -373,7 +373,7 @@ if test x${IS_WINDOWS} = xTRUE; then
+@@ -707,7 +707,7 @@
      AC_SUBST([locallibbindir], [${prefix}/bin])
      AC_SUBST([localerlanglibdir], [${libdir}])
  else
@@ -29,7 +17,3 @@ index 4ac64f9..248bff7 100644
 +    AC_SUBST([locallibbindir], [${locallibdir}/erlang/lib/couch-${version}/priv])
      AC_SUBST([localerlanglibdir], [${locallibdir}/erlang/lib])
  fi
- 
--- 
-1.7.5.1
-
