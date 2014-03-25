@@ -4,7 +4,7 @@
 
 Name:       couchdb
 Version:    1.5.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -31,11 +31,7 @@ BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:  curl-devel >= 7.18.0
 BuildRequires:  erlang-erts >= R13B
-# BuildRequires:  erlang-ibrowse >= 2.2.0
-# BuildRequires:  erlang-mochiweb
-# BuildRequires:  erlang-oauth
 BuildRequires:  erlang-os_mon
-# BuildRequires:  erlang-snappy
 BuildRequires:  help2man
 BuildRequires:  js-devel >= 1.8.5
 BuildRequires:  libicu-devel
@@ -47,13 +43,9 @@ Requires:    erlang-crypto%{?_isa}
 # Error:erlang(erlang:max/2) in R12B and below
 # Error:erlang(erlang:min/2) in R12B and below
 Requires:    erlang-erts%{?_isa} >= R13B
-# Requires:    erlang-ibrowse%{?_isa} >= 2.2.0
 Requires:    erlang-inets%{?_isa}
 Requires:    erlang-kernel%{?_isa}
-# Requires:    erlang-mochiweb%{?_isa}
-# Requires:    erlang-oauth%{?_isa}
 Requires:    erlang-os_mon%{?_isa}
-# Requires:    erlang-snappy%{?_isa}
 # Error:erlang(unicode:characters_to_binary/1) in R12B and below
 Requires:    erlang-stdlib%{?_isa} >= R13B
 Requires:    erlang-tools%{?_isa}
@@ -88,15 +80,6 @@ JavaScript acting as the default view definition language.
 %patch2 -p1 -b .use_versioned_docdir
 %patch3 -p1 -b .more_init_dirs
 %patch4 -p1 -b .install_into_erllibdir
-# %patch5 -p1 -b .remove_bundled_libs
-# %patch6 -p1 -b .workaround_for_system_wide_ibrowse
-# %patch7 -p1 -b .fix_javascript_tests
-
-# Remove bundled libraries
-# rm -rf src/erlang-oauth
-# rm -rf src/ibrowse
-# rm -rf src/mochiweb
-# rm -rf src/snappy
 
 # More verbose tests
 sed -i -e "s,prove,prove -v,g" test/etap/run.tpl
@@ -241,6 +224,9 @@ fi
 
 
 %changelog
+* Tue Mar 25 2014 Wendall Cada <wendallc@83864.com> - 1.5.0-2
+- Spec file cleanup
+
 * Fri Jan 17 2014 Paul Mietz Egli <paul@obscure.com> - 1.5.0-1
 - Updated patches and scripts to work with the CouchDb 1.5.0 release
 
