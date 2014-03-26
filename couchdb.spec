@@ -34,6 +34,8 @@ BuildRequires:  js-devel >= 1.8.5
 BuildRequires:  libicu-devel
 # For /usr/bin/prove
 BuildRequires:  perl(Test::Harness)
+# For building mochiweb
+BuildRequires: erlang-eunit
 
 Requires:    erlang-asn1%{?_isa}
 Requires:    erlang-crypto%{?_isa}
