@@ -3,8 +3,8 @@
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
 Name:       couchdb
-Version:    1.5.0
-Release:    2%{?dist}
+Version:    1.5.1
+Release:    1%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -223,6 +223,9 @@ fi
 
 
 %changelog
+* Fri Apr 4 2014 Wendall Cada <wendallc@83864.com> - 1.5.1-1
+- Updated to version 1.5.1 release.
+
 * Tue Mar 25 2014 Wendall Cada <wendallc@83864.com> - 1.5.0-2
 - Spec file cleanup
 
