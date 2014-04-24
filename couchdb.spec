@@ -4,7 +4,7 @@
 
 Name:       couchdb
 Version:    1.5.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -32,6 +32,7 @@ BuildRequires:  erlang-os_mon
 BuildRequires:  help2man
 BuildRequires:  js-devel >= 1.8.5
 BuildRequires:  libicu-devel
+BuildRequires:  erlang-xmerl
 # For /usr/bin/prove
 BuildRequires:  perl(Test::Harness)
 # For building mochiweb
@@ -223,6 +224,9 @@ fi
 
 
 %changelog
+* Thu Apr 24 2014 Wendall Cada <wendallc@83864.com> - 1.5.1-2
+- Added missing dep (erlang-xmerl) to build requirements.
+
 * Fri Apr 4 2014 Wendall Cada <wendallc@83864.com> - 1.5.1-1
 - Updated to version 1.5.1 release.
 
