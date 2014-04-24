@@ -38,17 +38,15 @@ These are written and tested against couchdb-1.2.0+
 * Fetch sources
   * spectool -g -R -C ./ couchdb.spec
 * Build SRPM
-  * sudo mock -r epel-6-x86_64 --buildsrpm --sources ./ --spec ./couchdb.spec
+  * sudo mock -r centos-6-x86_64 --buildsrpm --sources ./ --spec ./couchdb.spec
 * Copy generated SRPM to working directory
-  * cp /var/lib/mock/epel-6-x86_64/result/couchdb-1.3.0-3.el6.src.rpm ./
+  * cp /var/lib/mock/centos-6-x86_64/result/couchdb-1.3.0-3.el6.src.rpm ./
 * Install dependencies
-  * sudo mock -r epel-6-x86_64 --installdeps couchdb-1.3.0-3.el6.src.rpm
+  * sudo mock -r centos-6-x86_64 --installdeps couchdb-1.3.0-3.el6.src.rpm
 * Build RPM
-  * sudo mock -r epel-6-x86_64 rebuild couchdb-1.3.0-3.el6.src.rpm
+  * sudo mock -r centos-6-x86_64 rebuild couchdb-1.3.0-3.el6.src.rpm
 * Copy built RPMS to working directory
-  * cp /var/lib/mock/epel-6-x86_64/result/ ./
-  * cp /var/lib/mock/epel-6-x86_64/result/ ./
-  * cp /var/lib/mock/epel-6-x86_64/result/ ./
+  * cp /var/lib/mock/centos-6-x86_64/result/\*.rpm ./
 
 ## Prerelease Notes
 * Checkout couchdb from https://git-wip-us.apache.org/repos/asf/couchdb.git
