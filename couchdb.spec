@@ -3,8 +3,8 @@
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
 Name:       couchdb
-Version:    1.5.1
-Release:    4%{?dist}
+Version:    1.6.0
+Release:    1%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -177,8 +177,6 @@ fi
 
 
 %files
-# %doc AUTHORS BUGS CHANGES LICENSE NEWS NOTICE README THANKS
-%doc AUTHORS BUGS LICENSE NOTICE README.rst THANKS
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/local.d
 %dir %{_sysconfdir}/%{name}/default.d
@@ -211,12 +209,16 @@ fi
 %{_mandir}/man1/%{name}.1.*
 %{_mandir}/man1/couchjs.1.*
 %{_infodir}/CouchDB.gz
+%{_datadir}/doc/%{name}-%{version}
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/log/%{name}
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/run/%{name}
 %dir %attr(0755, %{couchdb_user}, %{couchdb_group}) %{_localstatedir}/lib/%{name}
 
 
 %changelog
+* Wed May 7 2014 Wendall Cada <wendallc@83864.com> - 1.6.0-1
+- Updated to version 1.6.0 release.
+
 * Tue Apr 29 2014 Wendall Cada <wendallc@83864.com> - 1.5.1-4
 - Cleanup requirements
 
