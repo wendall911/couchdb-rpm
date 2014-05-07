@@ -4,7 +4,7 @@
 
 Name:       couchdb
 Version:    1.5.1
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -25,31 +25,23 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  autoconf
 BuildRequires:  autoconf-archive
 BuildRequires:  automake
-BuildRequires:  libtool
 BuildRequires:  curl-devel >= 7.18.0
+BuildRequires:  erlang-asn1
 BuildRequires:  erlang-erts >= R13B
+# For building mochiweb
+BuildRequires:  erlang-eunit
 BuildRequires:  erlang-os_mon
+BuildRequires:  erlang-xmerl
 BuildRequires:  help2man
 BuildRequires:  js-devel >= 1.8.5
 BuildRequires:  libicu-devel
-BuildRequires:  erlang-xmerl
-BuildRequires:  erlang-asn1
+BuildRequires:  libtool
 # For /usr/bin/prove
 BuildRequires:  perl(Test::Harness)
-# For building mochiweb
-BuildRequires: erlang-eunit
 
 Requires:    erlang-asn1%{?_isa}
-Requires:    erlang-crypto%{?_isa}
-# Error:erlang(erlang:max/2) in R12B and below
-# Error:erlang(erlang:min/2) in R12B and below
 Requires:    erlang-erts%{?_isa} >= R13B
-Requires:    erlang-inets%{?_isa}
-Requires:    erlang-kernel%{?_isa}
 Requires:    erlang-os_mon%{?_isa}
-# Error:erlang(unicode:characters_to_binary/1) in R12B and below
-Requires:    erlang-stdlib%{?_isa} >= R13B
-Requires:    erlang-tools%{?_isa}
 Requires:    erlang-xmerl%{?_isa}
 
 #Initscripts
@@ -225,6 +217,9 @@ fi
 
 
 %changelog
+* Tue Apr 29 2014 Wendall Cada <wendallc@83864.com> - 1.5.1-4
+- Cleanup requirements
+
 * Thu Apr 24 2014 Wendall Cada <wendallc@83864.com> - 1.5.1-3
 - Added missing dep (erlang-asn1) to build requirements.
 
