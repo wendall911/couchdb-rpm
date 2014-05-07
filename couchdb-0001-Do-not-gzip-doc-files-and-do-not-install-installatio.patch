@@ -1,7 +1,7 @@
-diff -up apache-couchdb-1.5.0.orig/Makefile.am apache-couchdb-1.5.0/Makefile.am
---- apache-couchdb-1.5.0.orig/Makefile.am	2013-03-11 10:26:01.394927725 -0700
-+++ apache-couchdb-1.5.0/Makefile.am	2013-03-11 11:37:31.331500639 -0700
-@@ -15,16 +15,16 @@
+diff -up apache-couchdb-1.6.0.orig/Makefile.am apache-couchdb-1.6.0/Makefile.am
+--- apache-couchdb-1.6.0.orig/Makefile.am	2014-05-07 12:08:49.859670173 -0700
++++ apache-couchdb-1.6.0/Makefile.am	2014-05-07 12:22:30.551670075 -0700
+@@ -15,16 +15,16 @@ SUBDIRS = bin etc src share test var uti
  ACLOCAL_AMFLAGS = -I m4
  
  localdoc_DATA = \
@@ -28,7 +28,7 @@ diff -up apache-couchdb-1.5.0.orig/Makefile.am apache-couchdb-1.5.0/Makefile.am
  
  DISTCLEANFILES = $(localdoc_DATA)
  
-@@ -32,9 +32,6 @@
+@@ -32,9 +32,6 @@ EXTRA_DIST = \
      AUTHORS \
      BUGS \
      DEVELOPERS \
@@ -38,9 +38,9 @@ diff -up apache-couchdb-1.5.0.orig/Makefile.am apache-couchdb-1.5.0/Makefile.am
      LICENSE \
      NOTICE \
      README.rst \
-@@ -44,36 +41,6 @@
-     build-aux/sphinx-touch \
-     license.skip
+@@ -45,36 +42,6 @@ EXTRA_DIST = \
+     license.skip \
+     Vagrantfile
  
 -AUTHORS.gz: AUTHORS
 -	gzip -9 < $< > $@
