@@ -3,7 +3,7 @@
 %define couchdb_home %{_localstatedir}/lib/couchdb
 
 Name:       couchdb
-Version:    1.6.0
+Version:    1.6.1
 Release:    1%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
@@ -216,6 +216,9 @@ fi
 
 
 %changelog
+* Mon Nov 11 2014 Robert Conrad <robert.conrad@kreuzwerker.de> - 1.6.1-1
+- Bump version to upstream 1.6.1 release.
+
 * Wed May 7 2014 Wendall Cada <wendallc@83864.com> - 1.6.0-1
 - Updated to version 1.6.0 release.
 
@@ -273,10 +276,10 @@ fi
 - Added run dir to tmpfiles.d for fc15+ so run dir persists between reboots.
 - Update for 1.2.0 release, third round based on 654768
 
-* Wed Mar 21 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-3 
+* Wed Mar 21 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-3
 - New version based on cd238b42d13
 
-* Thu Mar 15 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-2 
+* Thu Mar 15 2012 Wendall Cada <wendallc@83864.com> - 1.2.0-2
 - Removed spidermonkey configuration patch (Fixed)
 - Removed etap patch (Fixed)
 - Removed spidermonkey configuration flags not required with new configure
