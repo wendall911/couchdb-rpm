@@ -1,3 +1,4 @@
 *.tar.gz
 *.asc
 *.rpm
+.vagrant
