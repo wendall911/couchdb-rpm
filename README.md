@@ -15,6 +15,8 @@ These are written and tested against couchdb-1.2.0+
   * rpm -ihv epel-release-{version}.noarch.rpm
 * Setup rpmbuild
   * [Instructions](http://wiki.centos.org/HowTos/SetupRpmBuildEnvironment)
+* If installing into Centos 6, autoconf-archive was removed for no good reason. Please build and install as it is a prereq for building.
+  * [autoconf-archive](https://github.com/wendall911/autoconf-archive)
 * If you want a ~4X faster couchdb replace js-devel-1.7, build and install working js-devel-1.8.5
   * [js185](https://github.com/wendall911/js185)
 * Install js and js-devel rpms from step above or continue
