@@ -4,7 +4,7 @@
 
 Name:       couchdb
 Version:    1.6.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A document database server, accessible via a RESTful JSON API
 
 Group:      Applications/Databases
@@ -45,7 +45,7 @@ Requires:    erlang-os_mon%{?_isa}
 Requires:    erlang-xmerl%{?_isa}
 
 #Initscripts
-%if 0%{?fedora} > 16
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
 Requires(post): systemd info
 Requires(preun): systemd info
 Requires(postun): systemd
@@ -88,10 +88,12 @@ make %{?_smp_mflags}
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 
-# Install our custom couchdb initscript
 %if 0%{?fedora} > 16
 # Install /etc/tmpfiles.d entry
 install -D -m 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/tmpfiles.d/%{name}.conf
+%endif
+# Install our custom couchdb initscript
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
 # Install systemd entry
 install -D -m 755 %{SOURCE3} %{buildroot}%{_unitdir}/%{name}.service
 rm -rf %{buildroot}/%{_sysconfdir}/rc.d/
@@ -126,7 +128,7 @@ exit 0
 
 
 %post
-%if 0%{?fedora} > 16
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
 if [ $1 -eq 1 ] ; then
     # Initial installation
     /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
@@ -138,7 +140,7 @@ fi
 
 
 %preun
-%if 0%{?fedora} > 16
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
 if [ $1 -eq 0 ] ; then
     # Package removal, not upgrade
     /usr/bin/systemctl --no-reload disable %{name}.service > /dev/null 2>&1 || :
@@ -154,7 +156,7 @@ fi
 
 
 %postun
-%if 0%{?fedora} > 16
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
 /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 if [ $1 -ge 1 ] ; then
     # Package upgrade, not uninstall
@@ -163,7 +165,7 @@ fi
 %endif
 
 
-%if 0%{?fedora} > 16
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
 %triggerun -- couchdb < 1.0.3-5
 # Save the current service runlevel info
 # User must manually run systemd-sysv-convert --apply httpd
@@ -185,6 +187,8 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %if 0%{?fedora} > 16
 %{_sysconfdir}/tmpfiles.d/%{name}.conf
+%endif
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %else
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
@@ -216,7 +220,10 @@ fi
 
 
 %changelog
-* Mon Nov 11 2014 Robert Conrad <robert.conrad@kreuzwerker.de> - 1.6.1-1
+* Wed Apr 6 2016 Gavin Williams <fatmcgav@gmail.com> - 1.6.1-2
+- Update to support CentOS 7
+
+* Tue Nov 11 2014 Robert Conrad <robert.conrad@kreuzwerker.de> - 1.6.1-1
 - Bump version to upstream 1.6.1 release.
 
 * Wed May 7 2014 Wendall Cada <wendallc@83864.com> - 1.6.0-1
