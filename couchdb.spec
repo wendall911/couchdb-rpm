@@ -39,6 +39,10 @@ BuildRequires:  libtool
 # For /usr/bin/prove
 BuildRequires:  perl(Test::Harness)
 
+%if 0%{?fedora} > 16 || 0%{?rhel} >= 7
+BuildRequires: systemd-units
+%endif
+
 Requires:    erlang-asn1%{?_isa}
 Requires:    erlang-erts%{?_isa} >= R13B
 Requires:    erlang-os_mon%{?_isa}
