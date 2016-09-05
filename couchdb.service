@@ -14,7 +14,8 @@ StartLimitBurst=5
 PermissionsStartOnly=true
 ExecStartPre=/usr/bin/install -o couchdb -g couchdb -d /var/run/couchdb
 PIDFile=/var/run/couchdb/couchdb.pid
-ExecStart=/usr/bin/erl +Bd -noinput -sasl errlog_type error +K true +A 4 -couch_ini /etc/couchdb/default.ini /etc/couchdb/local.ini -s couch -pidfile /var/run/couchdb/couchdb.pid -heart
+Environment="ERL_FLAGS=-pidfile /var/run/couchdb/couchdb.pid -heart"
+ExecStart=/usr/bin/couchdb
 
 [Install]
 WantedBy=multi-user.target
